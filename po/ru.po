@@ -303,7 +303,6 @@ msgstr "свекла"
 msgid "onion"
 msgstr "лук"
 
-#Fixed_TODO, duplicate of "squash"
 #: resources.py:4
 msgid "cabbage"
 msgstr "капуста"
@@ -354,7 +353,7 @@ msgstr "хлеб"
 
 #: resources.py:5
 msgid "cereal"
-msgstr "бутерброт"
+msgstr "овсянка"
 
 #: resources.py:5
 msgid "hash"
@@ -462,7 +461,7 @@ msgstr "серый"
 
 #: resources.py:8 resources.py:89
 msgid "red"
-msgstr "аквамарин"
+msgstr "индиго"
 
 #: resources.py:8 resources.py:86
 msgid "green"
@@ -622,7 +621,7 @@ msgstr "сериал"
 
 #: resources.py:11
 msgid "spy"
-msgstr "шпионский"
+msgstr "кинозал"
 
 #: resources.py:12
 msgid "BOOKS"
@@ -658,7 +657,7 @@ msgstr "поэзия"
 
 #: resources.py:12
 msgid "title"
-msgstr "заголовок"
+msgstr "тираж"
 
 #: resources.py:12
 msgid "genre"
@@ -767,12 +766,11 @@ msgstr "волна"
 
 #: resources.py:15 resources.py:38 resources.py:88
 msgid "beach"
-msgstr "берег"
+msgstr "пляж"
 
-#Fixed_TODO, duplicate of "shore" in both BEACHES and OCEANS category
 #: resources.py:15 resources.py:56 resources.py:88
 msgid "coast"
-msgstr "побережье"
+msgstr "берег"
 
 #: resources.py:15 resources.py:56
 msgid "tide"
@@ -780,7 +778,7 @@ msgstr "прилив"
 
 #: resources.py:15 resources.py:56
 msgid "shore"
-msgstr "сэнди"
+msgstr "залив"
 
 #: resources.py:15 resources.py:35 resources.py:47 resources.py:77
 msgid "water"
@@ -1236,7 +1234,7 @@ msgstr "таблетка"
 
 #: resources.py:26 resources.py:50
 msgid "nurse"
-msgstr "медсестра"
+msgstr "сиделка"
 
 #: resources.py:26
 msgid "clinic"
@@ -1268,7 +1266,7 @@ msgstr "книги"
 
 #: resources.py:27
 msgid "math"
-msgstr "математика"
+msgstr "диплом"
 
 #: resources.py:27
 msgid "class"
@@ -1316,7 +1314,7 @@ msgstr "дизайн"
 
 #: resources.py:28 resources.py:97
 msgid "image"
-msgstr "изображение"
+msgstr "талант"
 
 #: resources.py:28
 msgid "canvas"
@@ -1542,7 +1540,6 @@ msgstr "враги"
 msgid "score"
 msgstr "счёт"
 
-#Fixed_TODO, same as "wrench"
 #: resources.py:34 resources.py:51 resources.py:85
 msgid "level"
 msgstr "уровень"
@@ -1581,7 +1578,7 @@ msgstr "росток"
 
 #: resources.py:35
 msgid "prune"
-msgstr "чернослив"
+msgstr "грабли"
 
 #: resources.py:35 resources.py:61 resources.py:92
 msgid "tools"
@@ -1811,7 +1808,6 @@ msgstr "миф"
 msgid "god"
 msgstr "бог"
 
-#Fixed_TODO, duplicate of "ghost"
 #: resources.py:42 resources.py:64 resources.py:68 resources.py:73
 #: resources.py:96
 msgid "beast"
@@ -2091,7 +2087,7 @@ msgstr "актёр"
 
 #: resources.py:50
 msgid "guard"
-msgstr "охранник"
+msgstr "труд"
 
 #: resources.py:50
 msgid "miner"
@@ -2729,7 +2725,6 @@ msgstr "АСТРОНОМИЯ"
 msgid "nebula"
 msgstr "метеорит"
 
-#Fixed_TODO, duplicate of "space"
 #: resources.py:69
 msgid "cosmos"
 msgstr "космос"
@@ -3440,7 +3435,7 @@ msgstr "темнота"
 
 #: resources.py:91
 msgid "stalag"
-msgstr "сталагтит"
+msgstr "грот"
 
 #: resources.py:91
 msgid "depth"
@@ -3470,7 +3465,6 @@ msgstr "механизм"
 msgid "cog"
 msgstr "андроид"
 
-#Fixed_TODO, duplicate of "arm"
 #: resources.py:92
 msgid "bolt"
 msgstr "киборг"
@@ -3557,7 +3551,7 @@ msgstr "кора"
 
 #: resources.py:95
 msgid "erupts"
-msgstr "извержение"
+msgstr "жерло"
 
 #: resources.py:95
 msgid "crack"
@@ -3621,7 +3615,7 @@ msgstr "блеск"
 
 #: resources.py:97
 msgid "reflect"
-msgstr "отражение"
+msgstr "осколки"
 
 #: resources.py:97
 msgid "room"
