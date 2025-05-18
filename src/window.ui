@@ -262,6 +262,21 @@
                           </object>
                         </child>
                         <child>
+                          <object class="AdwActionRow">
+                            <property name="activatable">True</property>
+                            <property name="activatable-widget">jumble_category</property>
+                            <property name="title" translatable="yes">Jumble</property>
+                            <property name="subtitle" translatable="yes">A little bit of everything</property>
+                            <property name="icon-name">soup-symbolic</property>
+                            <child>
+                              <object class="GtkCheckButton" id="jumble_category">
+                                <property name="active">False</property>
+                                <property name="group">theme_selector</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
                           <object class="GtkListBox" id="category_list">
                             <property name="margin-top">15</property>
                             <property name="valign">start</property>
@@ -311,11 +326,11 @@
                         <property name="allow-long-swipes">True</property>
                         <property name="vexpand">True</property>
                         <child>
-                          <object class="GtkScrolledWindow">
+                          <object class="GtkScrolledWindow" id="recommended_settings">
                             <property name="hexpand">True</property>
                             <property name="vexpand">True</property>
                             <child>
-                              <object class="AdwClamp" id="recommended_settings">
+                              <object class="AdwClamp">
                                 <property name="hexpand">True</property>
                                 <property name="margin-bottom">5</property>
                                 <property name="margin-end">15</property>
@@ -370,7 +385,7 @@
                                           </object>
                                         </child>
                                         <style>
-                                          <class name="boxed-list"/>
+                                          <class name="boxed-list-separate"/>
                                         </style>
                                       </object>
                                     </child>

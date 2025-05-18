@@ -17,9 +17,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
-
-import gi
+import sys, gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -45,7 +43,7 @@ class HuntApplication(Adw.Application):
         about = Adw.AboutDialog(application_name='Hunt',
                                 application_icon='io.github.swordpuffin.hunt',
                                 developer_name='Nathan Perlman',
-                                version='1.1.3',
+                                version='1.1.4',
                                 issue_url='https://github.com/SwordPuffin/Hunt/issues',
                                 developers=['Nathan Perlman', 'DodoLeDev'],
                                 copyright='© 2025 Nathan Perlman')

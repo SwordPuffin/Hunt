@@ -1,3 +1,40 @@
+# window.py
+#
+# Copyright 2025 Nathan Perlman
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+# main.py
+#
+# Copyright 2025 Nathan Perlman
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import random, time
 from gi.repository import Adw, Gtk, Gdk, Gio, GLib
 from .resources import *
@@ -26,6 +63,7 @@ class HuntWindow(Adw.ApplicationWindow):
     main_window_content = Gtk.Template.Child()
     sidebar_view = Gtk.Template.Child()
     theme_selector = Gtk.Template.Child()
+    jumble_category = Gtk.Template.Child()
     game_selector = Gtk.Template.Child()
     custom_settings = Gtk.Template.Child()
     recommended_settings = Gtk.Template.Child()
@@ -64,7 +102,7 @@ class HuntWindow(Adw.ApplicationWindow):
     grid_data = None
     current_word = None
     timer_id = None
-    random_key = None
+    key = None
     dialog = None
     divided_timer = None
     reference_time = None
@@ -101,6 +139,7 @@ class HuntWindow(Adw.ApplicationWindow):
         self.medium_game.connect("activated", self.start_game, _, 8, 12, 12, 60, 600, 600)
         self.large_game.connect("activated", self.start_game, _, 10, 16, 16, 80, 800, 800)
         self.theme_selector.connect("toggled", lambda cb, cat="RANDOM": self.on_row_activated(cb, cat))
+        self.jumble_category.connect("toggled", lambda cb, cat="JUMBLE": self.on_row_activated(cb, cat))
         self.gamemode.connect("toggled",  self.update_gamemode, False, False, False, self.gamemode_ar)
         self.gamemode_timed.connect("toggled", self.update_gamemode, True, True, False, self.gamemode_timed_ar)
         self.gamemode_blitz.connect("toggled",self.update_gamemode, True, False, True, self.gamemode_blitz_ar)
@@ -111,33 +150,29 @@ class HuntWindow(Adw.ApplicationWindow):
             listEntry = Gtk.ListBoxRow(selectable=False, child=actionEntry)
 
             checkbox = Gtk.CheckButton()
-            if(actionEntry.get_title().upper() in self.selected_categories):
-                checkbox.set_active(True)
-            else:
-                checkbox.set_active(False)
+            # if(actionEntry.get_title().upper() in self.selected_categories):
+            #     checkbox.set_active(True)
+            # else:
+            #     checkbox.set_active(False)
             self.checkbuttons.append(checkbox)
             actionEntry.add_suffix(checkbox)
             actionEntry.set_activatable_widget(checkbox)
             checkbox.connect("toggled", lambda cb, cat=item.upper(): self.on_row_activated(cb, cat))
 
             self.category_list.append(listEntry)
-        self.category_list.set_sensitive(False)
         self.category_list.connect("row-selected", lambda _, row: row.get_child().activate() if row else None)
         self.search_entry.connect("search-changed", self.list_changed)
 
     def list_changed(self, search_entry):
-        # Get the query from the search box and convert it to lowercase
         query = search_entry.get_text().lower()
 
         # Filter the categories based on the query
         filtered_categories = filter(lambda c: query in c.lower(), related_words.keys())
 
         self.checkbuttons.clear()
-        # Clear existing rows in the ListBox
         while(self.category_list.get_first_child() is not None):
             self.category_list.remove(self.category_list.get_first_child())
 
-        # Add rows for the filtered categories
         for category in sorted(filtered_categories):
             actionEntry = Adw.ActionRow(title=category.capitalize())
             listEntry = Gtk.ListBoxRow(selectable=False, child=actionEntry)
@@ -157,17 +192,16 @@ class HuntWindow(Adw.ApplicationWindow):
     #Changes the active category depending on what row in self.category_list is selected
     def on_row_activated(self, cb, actionName):
         if(cb.get_active()):
-            self.selected_categories.add(actionName)
+            self.selected_categories.add(actionName.upper())
+            if(actionName != "RANDOM" and actionName != "JUMBLE"):
+                self.theme_selector.set_active(False); self.jumble_category.set_active(False)
         else:
             self.selected_categories.remove(actionName.upper())
-        if(actionName == "RANDOM" and cb.get_active()):
-            self.category_list.set_sensitive(False)
+        if(actionName == "RANDOM" and cb.get_active() or actionName == "JUMBLE" and cb.get_active()):
             for child in self.checkbuttons:
                 child.set_active(False)
             self.selected_categories.clear()
-            self.selected_categories.add("RANDOM")
-        elif(actionName == "RANDOM" and not cb.get_active()):
-            self.category_list.set_sensitive(True)
+            self.selected_categories.add(actionName)
         self.active_category.set_title(", ".join(item.capitalize() for item in self.selected_categories))
 
         # Display the number of selected categories if more than one in mobile mode
@@ -232,10 +266,10 @@ class HuntWindow(Adw.ApplicationWindow):
 
     #Function that is the timer of the game. Return false/return true ends or continues the function
     def update(self):
-        if self.timer_progBar.get_fraction() < 0.25:
+        if(self.timer_progBar.get_fraction() < 0.25):
             self.timer_progBar.remove_css_class("warning")
             self.timer_progBar.add_css_class("error")
-        elif self.timer_progBar.get_fraction() < 0.5:
+        elif(self.timer_progBar.get_fraction() < 0.5):
             self.timer_progBar.add_css_class("warning")
         else:
             self.timer_progBar.remove_css_class("warning")
@@ -245,7 +279,7 @@ class HuntWindow(Adw.ApplicationWindow):
             self.clock.set_description("Timer ended!")
             self.end_dialogue(hasWon=False)
             return False
-        else: #Reduces timer by 0.1 seconds every (obviously) 0.1 seconds
+        else:
             self.timer -= 0.1
             self.clock.set_description(time.strftime("%H:%M:%S", time.gmtime(self.timer)) + f".{int((self.timer % 1) * 10)}")
             self.timer_progBar.set_fraction(self.timer / self.reference_time)
@@ -285,10 +319,10 @@ class HuntWindow(Adw.ApplicationWindow):
                 self.timer = 0 #Reset timer so it will be equal to self.divided_timer on first execution
 
         self.grid.set_visible(True)
-        if(len(self.random_key) > 1):
-            self.game_title.set_subtitle(", ".join(item.capitalize() for item in self.random_key))
+        if(len(self.key) > 1):
+            self.game_title.set_subtitle(", ".join(item.capitalize() for item in self.key))
         else:
-            self.game_title.set_subtitle(self.random_key[0].capitalize())
+            self.game_title.set_subtitle(self.key[0].capitalize())
         while(self.grid.get_child_at(0,0) is not None): #Clear the entire main grid where all the letters are
             self.grid.remove_row(0)
 
@@ -351,14 +385,18 @@ class HuntWindow(Adw.ApplicationWindow):
         self.words.clear()
         self.words_left.clear()
         if("RANDOM" in self.selected_categories):
-            self.random_key = [random.choice(list(related_words.keys()))]
-            self.word_list = related_words[self.random_key[0]]
+            self.key = [random.choice(list(related_words.keys()))]
+            self.word_list = related_words[self.key[0]]
+        elif("JUMBLE" in self.selected_categories):
+            self.key = [(_("Jumble"))]
+            for i in range(10):
+                self.word_list.append(random.choice(related_words[random.choice(list(related_words.keys()))]))
         else:
             self.word_list = []
             for item in self.selected_categories:
                 if related_words[item] not in self.word_list:
                     self.word_list += related_words[item]
-            self.random_key = list(self.selected_categories) #For the end dialog when stating the category
+            self.key = list(self.selected_categories) #For the end dialog when stating the category
         self.grid_data = [[' ' for _ in range(self.length)] for _ in range(self.height)]
         self.word_list = list(set(self.word_list)) #Kind of stupid, but removes all the duplicate words if there are two or more active themes and they have a few in common
         random.shuffle(self.word_list)
@@ -371,8 +409,8 @@ class HuntWindow(Adw.ApplicationWindow):
             self.words_left.append(newWord)
         del self.words[self.word_count:]; del self.words_left[self.word_count:]
         if(len(self.words) < self.word_count):
-            if("RANDOM" in self.selected_categories):
-                print("error placing word: " + str(self.random_key))
+            if("RANDOM" in self.selected_categories or "Jumble" in self.selected_categories):
+                print("error placing word: " + str(self.key))
                 self.make_grid("activate", _)
                 return False
             else:
@@ -475,8 +513,6 @@ class HuntWindow(Adw.ApplicationWindow):
             self.frame_light.attach(generate_new_entry("<i>No words left</i>", True), 0, 0, 1, 1)
             if self.frame_light.get_halign() != Gtk.Align.CENTER: self.frame_light.set_halign(Gtk.Align.CENTER)
 
-
-
     #Fetches the word in between the two selected buttons. Also checks if the word that is made is one of words the player is supposed to find
     def letter_selected(self, action, _, button):
         if(not self.current_word and self.game_over == False):
@@ -564,21 +600,19 @@ class HuntWindow(Adw.ApplicationWindow):
 
     def on_button_hovered(self, controller, event, _):
         if(not self.current_word):
-            return  # No starting button selected yet
+            return
 
         hovered_button = controller.get_widget()
         first_pos = self.grid.query_child(self.current_word)
         second_pos = self.grid.query_child(hovered_button)
 
         if(not first_pos or not second_pos):
-            return  # Ensure positions are valid
+            return
 
-        # Clear previous highlights
         for button in self.word_buttons:
             if(button is not self.current_word):
                 button.remove_css_class("green_button")
 
-        # Get all buttons along the path
         path_buttons = self.get_path_buttons(first_pos, second_pos)
 
         # Highlight the path
@@ -626,7 +660,7 @@ class HuntWindow(Adw.ApplicationWindow):
             GLib.Source.remove(self.timer_id)
             self.divided_timer = None
 
-        endDialog_obj = EndDialog(self.random_key, f"{self.length} ⨯ {self.height}", len(self.found_words), self.word_count, hasWon)
+        endDialog_obj = EndDialog(self.key, f"{self.length} ⨯ {self.height}", len(self.found_words), self.word_count, hasWon)
         endDialog_obj.set_actions(self.close_end_dialogue, self.back_to_main_menu_game)
         endDialog_obj.present(self)
 

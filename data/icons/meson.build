@@ -26,6 +26,7 @@ actions_icons = [
   actions_dir / 'gamepad-symbolic.svg',
   actions_dir / 'lightbulb-symbolic.svg',
   actions_dir / 'gamepad-symbolic.svg',
+  actions_dir / 'soup-symbolic.svg',
 ]
 install_data(
   actions_icons,
