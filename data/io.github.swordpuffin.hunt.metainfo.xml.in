@@ -55,6 +55,16 @@
     <control>keyboard</control>
   </supports>
   <releases>
+    <release version="1.1.5" date="2025-11-08">
+      <url type="details">https://github.com/SwordPuffin/Hunt/releases/tag/v1.1.5</url>
+      <description translate="no">
+        <p>Hunt v1.1.5</p>
+        <p>Changes:</p>
+          <ul>
+            <li>Update runtime to current</li>
+          </ul>
+        </description>
+    </release>
     <release version="1.1.4" date="2025-5-18">
         <url type="details">https://github.com/SwordPuffin/Hunt/releases/tag/v1.1.4</url>
         <description translate="no">
