@@ -1,7 +1,7 @@
 {
     "id" : "io.github.swordpuffin.hunt",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "47",
+    "runtime-version" : "49",
     "sdk" : "org.gnome.Sdk",
     "command" : "hunt",
     "finish-args" : [
@@ -30,7 +30,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/SwordPuffin/Hunt.git",
-                    "tag" : "v1.1.4"
+                    "tag" : "v1.1.5"
                 }
             ]
         }
