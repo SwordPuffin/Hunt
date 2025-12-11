@@ -41,7 +41,7 @@ It just helps as when the words are too long they are really easy to spot, and c
 **Because of this, words can be AT MOST 16 characters, but ideally none are over 12 characters.**
 
 ### Contact
-I (Swordpuffin) can be reached at nathan.c.perlman@gmail.com, my preferred language is English.
+I (Swordpuffin) can be reached at nperlman@uwaterloo.ca, my preferred language is English.
 
 
 
